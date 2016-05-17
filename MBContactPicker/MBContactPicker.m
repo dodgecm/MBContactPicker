@@ -290,6 +290,7 @@ CGFloat const kAnimationSpeed = .25;
     if ([text isEqualToString:@" "])
     {
         [self hideSearchTableView];
+        _entryText = @"";
     }
     else
     {
@@ -300,18 +301,18 @@ CGFloat const kAnimationSpeed = .25;
         } completion:^(BOOL finished) {
              [self.contactCollectionView setFocusOnEntry];
         }];
-        
+      
+        _entryText = [text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
         [self showSearchTableView];
-        NSString *searchString = [text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
         NSPredicate *predicate;
         
         if ([self.delegate respondsToSelector:@selector(customFilterPredicate:)])
         {
-            predicate = [self.delegate customFilterPredicate:searchString];
+            predicate = [self.delegate customFilterPredicate:_entryText];
         } else if (self.allowsCompletionOfSelectedContacts) {
-            predicate = [NSPredicate predicateWithFormat:@"contactTitle contains[cd] %@", searchString];
+            predicate = [NSPredicate predicateWithFormat:@"contactTitle contains[cd] %@", _entryText];
         } else {
-            predicate = [NSPredicate predicateWithFormat:@"contactTitle contains[cd] %@ && !SELF IN %@", searchString, self.contactCollectionView.selectedContacts];
+            predicate = [NSPredicate predicateWithFormat:@"contactTitle contains[cd] %@ && !SELF IN %@", _entryText, self.contactCollectionView.selectedContacts];
         }
         self.filteredContacts = [self.contacts filteredArrayUsingPredicate:predicate];
         [self.searchTableView reloadData];

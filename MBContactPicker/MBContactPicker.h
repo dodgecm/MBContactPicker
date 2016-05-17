@@ -43,6 +43,7 @@ typedef void(^CompletionBlock)();
 @property (nonatomic, weak) IBOutlet id<MBContactPickerDelegate> delegate;
 @property (nonatomic, weak) IBOutlet id<MBContactPickerDataSource> datasource;
 @property (nonatomic, readonly) NSArray *contactsSelected;
+@property (nonatomic, readonly) NSString *entryText;
 @property (nonatomic) NSInteger cellHeight;
 @property (nonatomic, copy) NSString *prompt;
 @property (nonatomic) CGFloat maxVisibleRows;
